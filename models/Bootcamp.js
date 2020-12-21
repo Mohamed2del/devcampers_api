@@ -99,17 +99,22 @@ const BootcampSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    // user: {
-    //   type: mongoose.Schema.ObjectId,
-    //   ref: 'User',
-    //   required: true,
-    // },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
+
+// Save emails in lowercase
+BootcampSchema.pre('save', async function (next) {
+  this.email = this.email.toLowerCase();
+});
 
 // Create bootcamp slug from the name
 
