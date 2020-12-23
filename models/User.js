@@ -27,8 +27,8 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     select: false,
   },
-  restPasswordToken: String,
-  restPasswordExpired: Date,
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
   createdAt: {
     type: Date,
     default: Date.now,
@@ -68,13 +68,13 @@ UserSchema.methods.getResetPasswordToken = function () {
   const restToken = crypto.randomBytes(20).toString('hex');
 
   // Hash token and set to resetPasswordToken field
-  this.restPasswordToken = crypto
+  this.resetPasswordToken = crypto
     .createHash('sha256')
     .update(restToken)
     .digest('hex');
 
   // Set expire
-  this.restPasswordExpired = Date.now() + 10 * 60 * 1000;
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
   return restToken;
 };
 module.exports = mongoose.model('User', UserSchema);
